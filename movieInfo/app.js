@@ -12,83 +12,81 @@ mongoose.connect('mongodb://localhost:27017/movies', function (err, db) {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-router.use(function(req,res,next){
-    console.log('App in progress....');
-    next();
-});
+// router.use(function(req,res,next){
+//     console.log('App in progress....');
+//     next();
+// });
 
-router.route('/movies')
+// router.route('/movies')
 
-    .post(function(req,res){
+//     .post(function(req,res){
 
-        var movie = new Movie();
-        movie.title = req.body.title;
-        movie.rating = req.body.rating;
+//         var movie = new Movie();
+//         movie.title = req.body.title;
+//         movie.rating = req.body.rating;
         
-        movie.save(function(err){
-            if (err)
-                res.send(err);
+//         movie.save(function(err){
+//             if (err)
+//                 res.send(err);
 
-            res.json({message: "Movie created"});
-        });
-    })
+//             res.json({message: "Movie created"});
+//         });
+//     })
 
-    .get(function(req,res){
+//     .get(function(req,res){
 
-        Movie.find(function(err,movies){
-            if(err)
-                res.send(err);
+//         Movie.find(function(err,movies){
+//             if(err)
+//                 res.send(err);
 
-            res.json(movies)
-        })
-    });
+//             res.json(movies)
+//         })
+//     });
 
 
-router.route('/movies/:movieID')
+// router.route('/movies/:movieID')
 
-    .get(function(req,res){
-        Movie.findById(req.params.movieID, function(err, movie){
-            if (err) 
-                res.send(err);
+//     .get(function(req,res){
+//         Movie.findById(req.params.movieID, function(err, movie){
+//             if (err) 
+//                 res.send(err);
 
-            res.json(movie)
-        })
-    })
+//             res.json(movie)
+//         })
+//     })
 
-    .patch(function(req,res){
+//     .patch(function(req,res){
 
-        Movie.findById(req.params.movieID, function(err, movie){
-            if (err) 
-                res.send(err);
+//         Movie.findById(req.params.movieID, function(err, movie){
+//             if (err) 
+//                 res.send(err);
 
-            movie.rating = req.body.rating;
+//             movie.rating = req.body.rating;
 
-            movie.save(function(err){
-            if (err)
-                res.send(err);
+//             movie.save(function(err){
+//             if (err)
+//                 res.send(err);
 
-            res.json({message: "Movie updated"});
-           })
+//             res.json({message: "Movie updated"});
+//            })
 
-        })
-    })
+//         })
+//     })
 
-    .delete(function(req,res){
+//     .delete(function(req,res){
 
-        Movie.remove({
-            _id: req.params.movieID
+//         Movie.remove({
+//             _id: req.params.movieID
 
-        },function(err,movie){
-            if(err)
-                res.send(err);
+//         },function(err,movie){
+//             if(err)
+//                 res.send(err);
 
-            res.json({message: 'Successfully deleted'});
-        })
-    })
+//             res.json({message: 'Successfully deleted'});
+//         })
+//     })
 
-router.get('/',function(req,res){
-    res.json({message: "App in progress...."});
-})
+
 
 app.use('/api',router);
 
