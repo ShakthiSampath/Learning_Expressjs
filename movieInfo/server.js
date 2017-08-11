@@ -1,17 +1,27 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var router = express.Router();
-var Movie = require('./model/Movie');
-var app = express();
-var port = process.env.PORT || 8080;
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const morgan = require('morgan');
 
-mongoose.connect('mongodb://localhost:27017/movies', function (err, db) {
-    if (err) throw err
+const port = process.env.PORT || 8080;
+
+const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(morgan('dev'));
 
+mongoose.connect('mongodb://localhost:27017/movies', function (err, db) {
+    if (err) {
+        throw err;
+    }
+});
+
+app.use('/api/v1', require('./api/v1'));
+
+app.use((req, res) => {
+    res.status(404).send("Resource not found");
+});
 
 // router.use(function(req,res,next){
 //     console.log('App in progress....');
@@ -87,12 +97,10 @@ app.use(bodyParser.json());
 //         })
 //     })
 
-app.use(require('./routes'));
+// app.use(require('./routes'));
 
-app.use('/api',router);
+// app.use('/api',router);
 
 
 app.listen(port);
 console.log('Application is running on ', port);
-
-})
