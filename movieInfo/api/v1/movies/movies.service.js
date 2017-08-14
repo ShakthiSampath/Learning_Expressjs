@@ -46,17 +46,21 @@ const editMovieDetails = function(title, done) {
             return;
         }
 
-        for (prop in req.body) {
-         movieColln[prop] = req.body[prop];
-        }
+        let movie = new MoviesModel();
+        movie.title = movieColln.title;
+        movie.rating = movieColln.rating;
 
-    });
-    MovieModel.save(function(err,movie){
-        if (err) {
-            return err;
+        movie.save(function(err,result){
+        if (err){
+            console.log('Error in updating the movie: ', err);
+            done(err);
+            return;
         }
-    done(null,movie);
+        let resultObj = { title: result.title, rating: result.rating };
+        done(null, resultObj);
     });
+});
+
 }
 
 module.exports = {

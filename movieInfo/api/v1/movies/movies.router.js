@@ -6,7 +6,7 @@ router.post('/',function(req, res) {
    try{
        moviesCtrlr.addNewMovie(req.body, (err, result) => {
            if(err) {
-               res.status(500).send({error: "Internal error in processing, plese try later..!"});
+               res.status(500).send({error: "Internal error in processing, please try later..!"});
                return;
            }
 
@@ -15,7 +15,7 @@ router.post('/',function(req, res) {
        })
    } catch (err) {
        console.log("Error in route /movies, error: ", err);
-       res.status(500).send({error: "Internal error occurred, plese try again later..!"})
+       res.status(500).send({error: "Internal error occurred, please try again later..!"})
    } 
 });
 
@@ -23,7 +23,7 @@ router.get('/',(req, res) => {
    try{
        moviesCtrlr.getAllMovies((err, result) => {
            if(err) {
-               res.status(500).send({error: "Internal error in processing, plese try later..!"});
+               res.status(500).send({error: "Internal error in processing, please try later..!"});
                return;
            }
 
@@ -32,7 +32,7 @@ router.get('/',(req, res) => {
        })
    } catch (err) {
        console.log("Error in route /movies, error: ", err);
-       res.status(500).send({error: "Internal error occurred, plese try again later..!"})
+       res.status(500).send({error: "Internal error occurred, please try again later..!"})
    } 
 });
 
@@ -49,32 +49,22 @@ router.get('/:title', (req, res) => {
        })
    } catch (err) {
        console.log("Error in route /movies, error: ", err);
-       res.status(500).send({error: "Internal error occurred, plese try again later..!"})
+       res.status(500).send({error: "Internal error occurred, please try again later..!"})
    }
 });
 
 router.patch('/:title', (req,res) => {
     try{
-     moviesCtrlr.findMovieByTitle(req.params.title, function(err, movie){
-        if (err) 
+     moviesCtrlr.editMovieDetails(req.params.title, function(err, movie){
+        if (err)
             res.send(err);
 
-        movie.title = req.body.title;
-        movie.rating = req.body.rating;
-
-        movie.save(function(err,result){
-        if (err){
-            res.status(500).send({error: "Internal error in processing, plese try later..!"});
-            return;
-        }
-
-        res.send(result);
+        res.send(movie);
         return;
         })
-    })
   } catch (err){
       console.log("Error in route /movies/:title, error: ", err);
-      res.status(500).send({error: "Internal error occurred, plese try again later..!"})
+      res.status(500).send({error: "Internal error occurred, please try again later..!"})
   }
 });
 
