@@ -19,6 +19,23 @@ router.post('/',function(req, res) {
    } 
 });
 
+router.get('/',(req, res) => {       
+   try{
+       moviesCtrlr.getAllMovies((err, result) => {
+           if(err) {
+               res.status(500).send({error: "Internal error in processing, plese try later..!"});
+               return;
+           }
+
+           res.send(result);
+           return;
+       })
+   } catch (err) {
+       console.log("Error in route /movies, error: ", err);
+       res.status(500).send({error: "Internal error occurred, plese try again later..!"})
+   } 
+});
+
 router.get('/:title', (req, res) => {
     try{
        moviesCtrlr.findMovieByTitle(req.params.title, (err, result) => {
@@ -34,7 +51,32 @@ router.get('/:title', (req, res) => {
        console.log("Error in route /movies, error: ", err);
        res.status(500).send({error: "Internal error occurred, plese try again later..!"})
    }
-})
+});
+
+router.patch('/:title', (req,res) => {
+    try{
+     moviesCtrlr.findMovieByTitle(req.params.title, function(err, movie){
+        if (err) 
+            res.send(err);
+
+        movie.title = req.body.title;
+        movie.rating = req.body.rating;
+
+        movie.save(function(err,result){
+        if (err){
+            res.status(500).send({error: "Internal error in processing, plese try later..!"});
+            return;
+        }
+
+        res.send(result);
+        return;
+        })
+    })
+  } catch (err){
+      console.log("Error in route /movies/:title, error: ", err);
+      res.status(500).send({error: "Internal error occurred, plese try again later..!"})
+  }
+});
 
 //     .get(function(req,res){
 
@@ -45,7 +87,6 @@ router.get('/:title', (req, res) => {
 //             res.json(movies)
 //         })
 //     });
-
 
 // router.route('/movies/:movieID')
 

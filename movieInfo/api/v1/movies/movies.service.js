@@ -17,7 +17,7 @@ const addNewMovie = function (movieObj, done) {
 }
 
 const getAllMovies = function(done){
-    MoviesModel.find({_id: 0, __v:0}, function(err,movies){
+    MoviesModel.find(null, {_id: 0, __v:0},function(err,movies){
         if(err){
             console.log("Error in finding movies: ", err);
             done(err);
@@ -38,7 +38,30 @@ const findMovieByTitle = function(title, done) {
     });
 }
 
+const editMovieDetails = function(title, done) {
+    MoviesModel.find({title}, {_id: 0, __v:0}, function (err, movieColln) {
+        if (err) {
+            console.log("Error in finding movie: ", err);
+            done(err);
+            return;
+        }
+
+        for (prop in req.body) {
+         movieColln[prop] = req.body[prop];
+        }
+
+    });
+    MovieModel.save(function(err,movie){
+        if (err) {
+            return err;
+        }
+    done(null,movie);
+    });
+}
+
 module.exports = {
     addNewMovie,
-    findMovieByTitle
+    getAllMovies,
+    findMovieByTitle,
+    editMovieDetails
 }
